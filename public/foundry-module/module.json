@@ -1,0 +1,112 @@
+{
+  "id": "dnd5e-2014-ru",
+  "title": "D&D 5e (2014) — Полная редакция на русском языке",
+  "description": "Полная редакция Dungeons & Dragons 5-й редакции (2014) на русском языке. Включает все расы, подрасы, классы, предметы, заклинания, способности и лист персонажа. Совместимо с Foundry VTT 13.351 и системой dnd5e.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "D&D 5e RU Community",
+      "url": "https://github.com/dnd5e-ru"
+    }
+  ],
+  "esmodules": [
+    "scripts/dnd5e-2014.js"
+  ],
+  "styles": [
+    "styles/dnd5e-2014.css"
+  ],
+  "languages": [
+    {
+      "lang": "ru",
+      "name": "Русский",
+      "path": "lang/ru.json",
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
+        "compatibility": {
+          "minimum": "4.0.0",
+          "verified": "4.1.0"
+        }
+      }
+    ]
+  },
+  "packs": [
+    {
+      "name": "dnd5e-2014-items-ru",
+      "label": "Предметы D&D 5e (2014) — RU",
+      "path": "packs/dnd5e-2014-items-ru",
+      "type": "Item",
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "dnd5e-2014-spells-ru",
+      "label": "Заклинания D&D 5e (2014) — RU",
+      "path": "packs/dnd5e-2014-spells-ru",
+      "type": "Item",
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "dnd5e-2014-races-ru",
+      "label": "Расы D&D 5e (2014) — RU",
+      "path": "packs/dnd5e-2014-races-ru",
+      "type": "Item",
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "dnd5e-2014-classes-ru",
+      "label": "Классы D&D 5e (2014) — RU",
+      "path": "packs/dnd5e-2014-classes-ru",
+      "type": "Item",
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "dnd5e-2014-features-ru",
+      "label": "Способности D&D 5e (2014) — RU",
+      "path": "packs/dnd5e-2014-features-ru",
+      "type": "Item",
+      "system": "dnd5e",
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "D&D 5e (2014) — Русский",
+      "sorting": "m",
+      "color": "#8B0000",
+      "packs": [
+        "dnd5e-2014-items-ru",
+        "dnd5e-2014-spells-ru",
+        "dnd5e-2014-races-ru",
+        "dnd5e-2014-classes-ru",
+        "dnd5e-2014-features-ru"
+      ]
+    }
+  ],
+  "url": "https://github.com/dnd5e-ru/foundry-dnd5e-2014",
+  "manifest": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/releases/latest/download/module.json",
+  "download": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/releases/latest/download/dnd5e-2014-ru.zip",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "bugs": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/issues",
+  "changelog": "CHANGELOG.md",
+  "flags": {
+    "dnd5e-2014-ru": {
+      "edition": "2014"
+    }
+  }
+}

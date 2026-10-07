@@ -1,0 +1,157 @@
+{{!-- Инвентарь --}}
+<section class="inventory-section">
+  <div class="inventory-header">
+    <h3>🎒 Инвентарь</h3>
+    <div class="currency-bar">
+      <span class="currency-item">
+        <input type="number" name="system.currency.pp" value="{{currency.pp}}" data-dtype="Number" title="Платина" />
+        <label>ПМ</label>
+      </span>
+      <span class="currency-item">
+        <input type="number" name="system.currency.gp" value="{{currency.gp}}" data-dtype="Number" title="Золото" />
+        <label>ЗМ</label>
+      </span>
+      <span class="currency-item">
+        <input type="number" name="system.currency.ep" value="{{currency.ep}}" data-dtype="Number" title="Электрум" />
+        <label>ЭМ</label>
+      </span>
+      <span class="currency-item">
+        <input type="number" name="system.currency.sp" value="{{currency.sp}}" data-dtype="Number" title="Серебро" />
+        <label>СМ</label>
+      </span>
+      <span class="currency-item">
+        <input type="number" name="system.currency.cp" value="{{currency.cp}}" data-dtype="Number" title="Медь" />
+        <label>ММ</label>
+      </span>
+    </div>
+  </div>
+
+  {{!-- Оружие --}}
+  <div class="inventory-category">
+    <h4 class="category-header">
+      ⚔️ Оружие
+      <button type="button" class="item-create" data-type="weapon" title="Добавить оружие">+</button>
+    </h4>
+    <ol class="item-list">
+      {{#each inventory.weapons}}
+      <li class="item" data-item-id="{{this.id}}">
+        <div class="item-name">
+          <button type="button" class="item-roll" title="Атаковать">{{this.name}}</button>
+        </div>
+        <div class="item-detail item-damage">{{this.system.damage.parts.[0].[0]}}</div>
+        <div class="item-detail item-quantity">
+          <input type="number" value="{{this.system.quantity}}" data-dtype="Number" />
+        </div>
+        <div class="item-detail item-weight">{{this.system.weight}} фн.</div>
+        <div class="item-controls">
+          <button type="button" class="item-edit" title="Редактировать">✏️</button>
+          <button type="button" class="item-delete" title="Удалить">🗑️</button>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+
+  {{!-- Снаряжение --}}
+  <div class="inventory-category">
+    <h4 class="category-header">
+      🛡️ Снаряжение
+      <button type="button" class="item-create" data-type="equipment" title="Добавить снаряжение">+</button>
+    </h4>
+    <ol class="item-list">
+      {{#each inventory.equipment}}
+      <li class="item" data-item-id="{{this.id}}">
+        <div class="item-name">
+          <span>{{this.name}}</span>
+          {{#if this.system.armor}}<span class="item-tag">КД {{this.system.armor.value}}</span>{{/if}}
+        </div>
+        <div class="item-detail item-quantity">
+          <input type="number" value="{{this.system.quantity}}" data-dtype="Number" />
+        </div>
+        <div class="item-detail item-weight">{{this.system.weight}} фн.</div>
+        <div class="item-controls">
+          <button type="button" class="item-edit" title="Редактировать">✏️</button>
+          <button type="button" class="item-delete" title="Удалить">🗑️</button>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+
+  {{!-- Расходники --}}
+  <div class="inventory-category">
+    <h4 class="category-header">
+      🧪 Расходники
+      <button type="button" class="item-create" data-type="consumable" title="Добавить расходник">+</button>
+    </h4>
+    <ol class="item-list">
+      {{#each inventory.consumables}}
+      <li class="item" data-item-id="{{this.id}}">
+        <div class="item-name">
+          <button type="button" class="item-roll" title="Использовать">{{this.name}}</button>
+        </div>
+        <div class="item-detail item-uses">
+          {{this.system.uses.value}}/{{this.system.uses.max}}
+        </div>
+        <div class="item-detail item-quantity">
+          <input type="number" value="{{this.system.quantity}}" data-dtype="Number" />
+        </div>
+        <div class="item-controls">
+          <button type="button" class="item-edit" title="Редактировать">✏️</button>
+          <button type="button" class="item-delete" title="Удалить">🗑️</button>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+
+  {{!-- Инструменты --}}
+  <div class="inventory-category">
+    <h4 class="category-header">
+      🔧 Инструменты
+      <button type="button" class="item-create" data-type="tool" title="Добавить инструмент">+</button>
+    </h4>
+    <ol class="item-list">
+      {{#each inventory.tools}}
+      <li class="item" data-item-id="{{this.id}}">
+        <div class="item-name"><span>{{this.name}}</span></div>
+        <div class="item-detail item-quantity">
+          <input type="number" value="{{this.system.quantity}}" data-dtype="Number" />
+        </div>
+        <div class="item-detail item-weight">{{this.system.weight}} фн.</div>
+        <div class="item-controls">
+          <button type="button" class="item-edit" title="Редактировать">✏️</button>
+          <button type="button" class="item-delete" title="Удалить">🗑️</button>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+
+  {{!-- Прочее --}}
+  <div class="inventory-category">
+    <h4 class="category-header">
+      📦 Прочее
+      <button type="button" class="item-create" data-type="loot" title="Добавить предмет">+</button>
+    </h4>
+    <ol class="item-list">
+      {{#each inventory.loot}}
+      <li class="item" data-item-id="{{this.id}}">
+        <div class="item-name"><span>{{this.name}}</span></div>
+        <div class="item-detail item-quantity">
+          <input type="number" value="{{this.system.quantity}}" data-dtype="Number" />
+        </div>
+        <div class="item-detail item-weight">{{this.system.weight}} фн.</div>
+        <div class="item-controls">
+          <button type="button" class="item-edit" title="Редактировать">✏️</button>
+          <button type="button" class="item-delete" title="Удалить">🗑️</button>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+
+  <div class="inventory-footer">
+    <span class="total-weight">Общий вес: {{system.attributes.encumbrance.value}} фн.</span>
+  </div>
+</section>

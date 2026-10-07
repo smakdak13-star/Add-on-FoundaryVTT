@@ -1,0 +1,29 @@
+{{!-- Характеристики --}}
+<section class="abilities-section">
+  <h3 class="section-title">💪 Характеристики</h3>
+  <div class="abilities-grid">
+    {{#each abilities}}
+    <div class="ability-block">
+      <div class="ability-header">
+        <span class="ability-label">{{label}}</span>
+        <span class="ability-abbr">{{key}}</span>
+      </div>
+      <div class="ability-score">
+        <input type="number" name="system.abilities.{{key}}.value" value="{{value}}" data-dtype="Number" />
+      </div>
+      <div class="ability-mod {{#if (gte mod 0)}}positive{{else}}negative{{/if}}">
+        {{modString}}
+      </div>
+      <div class="ability-controls">
+        <button type="button" class="ability-roll" data-ability="{{key}}" title="Проверка: {{label}}">
+          🎲
+        </button>
+        <button type="button" class="proficiency-toggle save-roll" data-ability="{{key}}" data-type="ability"
+          title="Спасбросок: {{label}}">
+          <span class="prof-indicator {{#if proficient}}active{{/if}}"></span>
+        </button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</section>

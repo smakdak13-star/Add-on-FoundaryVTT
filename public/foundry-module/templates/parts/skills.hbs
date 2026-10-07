@@ -1,0 +1,43 @@
+{{!-- Навыки --}}
+<section class="skills-section">
+  <h3 class="section-title">🎯 Навыки</h3>
+  <div class="skills-list">
+    {{#each skills}}
+    <div class="skill-row">
+      <button type="button" class="proficiency-toggle skill-prof" data-key="{{key}}" data-type="skill"
+        title="Переключить владение">
+        <span class="prof-dot {{#if (eq value 1)}}proficient{{/if}} {{#if (eq value 2)}}expertise{{/if}}"></span>
+      </button>
+      <span class="skill-mod {{#if (gte bonus 0)}}positive{{else}}negative{{/if}}">
+        {{#if (gte bonus 0)}}+{{/if}}{{bonus}}
+      </span>
+      <button type="button" class="skill-roll" data-skill="{{key}}" title="Проверка: {{label}}">
+        {{label}}
+      </button>
+      <span class="skill-ability">({{abilityLabel}})</span>
+      <span class="skill-passive" title="Пассивное значение">{{passive}}</span>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+{{!-- Спасброски --}}
+<section class="saves-section">
+  <h3 class="section-title">🛡️ Спасброски</h3>
+  <div class="saves-list">
+    {{#each savingThrows}}
+    <div class="save-row">
+      <button type="button" class="proficiency-toggle" data-key="{{key}}" data-type="ability"
+        title="Переключить владение спасброском">
+        <span class="prof-dot {{#if proficient}}proficient{{/if}}"></span>
+      </button>
+      <button type="button" class="save-roll" data-ability="{{key}}" title="Спасбросок: {{label}}">
+        <span class="save-mod {{#if (gte mod 0)}}positive{{else}}negative{{/if}}">
+          {{#if (gte mod 0)}}+{{/if}}{{mod}}
+        </span>
+        {{label}}
+      </button>
+    </div>
+    {{/each}}
+  </div>
+</section>

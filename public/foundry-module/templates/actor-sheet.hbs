@@ -1,0 +1,51 @@
+<form class="dnd5e-2014-ru sheet actor character" autocomplete="off">
+  {{!-- Заголовок --}}
+  {{> "modules/dnd5e-2014-ru/templates/parts/header.hbs"}}
+
+  {{!-- Навигация --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="character">👤 Персонаж</a>
+    <a class="item" data-tab="inventory">🎒 Инвентарь</a>
+    <a class="item" data-tab="spells">✨ Заклинания</a>
+    <a class="item" data-tab="features">⭐ Способности</a>
+    <a class="item" data-tab="biography">📝 Биография</a>
+  </nav>
+
+  {{!-- Содержимое --}}
+  <section class="sheet-body">
+    {{!-- Вкладка: Персонаж --}}
+    <div class="tab character" data-group="primary" data-tab="character">
+      <div class="character-grid">
+        {{!-- Левая колонка --}}
+        <div class="left-column">
+          {{> "modules/dnd5e-2014-ru/templates/parts/abilities.hbs"}}
+          {{> "modules/dnd5e-2014-ru/templates/parts/combat.hbs"}}
+        </div>
+        {{!-- Правая колонка --}}
+        <div class="right-column">
+          {{> "modules/dnd5e-2014-ru/templates/parts/skills.hbs"}}
+        </div>
+      </div>
+    </div>
+
+    {{!-- Вкладка: Инвентарь --}}
+    <div class="tab inventory" data-group="primary" data-tab="inventory">
+      {{> "modules/dnd5e-2014-ru/templates/parts/inventory.hbs"}}
+    </div>
+
+    {{!-- Вкладка: Заклинания --}}
+    <div class="tab spells" data-group="primary" data-tab="spells">
+      {{> "modules/dnd5e-2014-ru/templates/parts/spells.hbs"}}
+    </div>
+
+    {{!-- Вкладка: Способности --}}
+    <div class="tab features" data-group="primary" data-tab="features">
+      {{> "modules/dndrye-2014-ru/templates/parts/features.hbs"}}
+    </div>
+
+    {{!-- Вкладка: Биография --}}
+    <div class="tab biography" data-group="primary" data-tab="biography">
+      {{> "modules/dnd5e-2014-ru/templates/parts/biography.hbs"}}
+    </div>
+  </section>
+</form>
