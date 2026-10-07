@@ -1,7 +1,7 @@
 {
   "id": "dnd5e-2014-ru",
   "title": "D&D 5e (2014) — Полная редакция на русском языке",
-  "description": "Полная редакция Dungeons & Dragons 5-й редакции (2014) на русском языке. Включает все расы, подрасы, классы, предметы, заклинания, способности и лист персонажа. Совместимо с Foundry VTT 13.351 и системой dnd5e.",
+  "description": "Полная редакция Dungeons & Dragons 5-й редакции (2014) на русском языке для Foundry VTT. Включает лист персонажа, компендиумы с расами, классами, предметами, заклинаниями и способностями. Совместимо с Foundry VTT 13 и системой dnd5e.",
   "version": "1.0.0",
   "compatibility": {
     "minimum": "13",
@@ -15,17 +15,16 @@
     }
   ],
   "esmodules": [
-    "scripts/dnd5e-2014.js"
+    "scripts/dnd5e-2014-ru.mjs"
   ],
   "styles": [
-    "styles/dnd5e-2014.css"
+    "styles/dnd5e-2014-ru.css"
   ],
   "languages": [
     {
       "lang": "ru",
       "name": "Русский",
-      "path": "lang/ru.json",
-      "flags": {}
+      "path": "lang/ru.json"
     }
   ],
   "relationships": {
@@ -33,7 +32,6 @@
       {
         "id": "dnd5e",
         "type": "system",
-        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
           "minimum": "4.0.0",
           "verified": "4.1.0"
@@ -43,44 +41,112 @@
   },
   "packs": [
     {
-      "name": "dnd5e-2014-items-ru",
-      "label": "Предметы D&D 5e (2014) — RU",
-      "path": "packs/dnd5e-2014-items-ru",
+      "name": "races-ru",
+      "label": "Расы (RU)",
+      "path": "packs/races-ru",
       "type": "Item",
       "system": "dnd5e",
-      "flags": {}
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "types": ["race", "feat"]
+        }
+      }
     },
     {
-      "name": "dnd5e-2014-spells-ru",
-      "label": "Заклинания D&D 5e (2014) — RU",
-      "path": "packs/dnd5e-2014-spells-ru",
+      "name": "classes-ru",
+      "label": "Классы (RU)",
+      "path": "packs/classes-ru",
       "type": "Item",
       "system": "dnd5e",
-      "flags": {}
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "types": ["class", "subclass", "feat"]
+        }
+      }
     },
     {
-      "name": "dnd5e-2014-races-ru",
-      "label": "Расы D&D 5e (2014) — RU",
-      "path": "packs/dnd5e-2014-races-ru",
+      "name": "items-ru",
+      "label": "Предметы (RU)",
+      "path": "packs/items-ru",
       "type": "Item",
       "system": "dnd5e",
-      "flags": {}
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "types": ["weapon", "equipment", "consumable", "tool", "loot", "container"]
+        }
+      }
     },
     {
-      "name": "dnd5e-2014-classes-ru",
-      "label": "Классы D&D 5e (2014) — RU",
-      "path": "packs/dnd5e-2014-classes-ru",
+      "name": "spells-ru",
+      "label": "Заклинания (RU)",
+      "path": "packs/spells-ru",
       "type": "Item",
       "system": "dnd5e",
-      "flags": {}
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "sorting": "m",
+          "types": ["spell"]
+        }
+      }
     },
     {
-      "name": "dnd5e-2014-features-ru",
-      "label": "Способности D&D 5e (2014) — RU",
-      "path": "packs/dnd5e-2014-features-ru",
+      "name": "features-ru",
+      "label": "Способности (RU)",
+      "path": "packs/features-ru",
       "type": "Item",
       "system": "dnd5e",
-      "flags": {}
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "types": ["feat"]
+        }
+      }
+    },
+    {
+      "name": "backgrounds-ru",
+      "label": "Предыстории (RU)",
+      "path": "packs/backgrounds-ru",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "types": ["background", "feat"]
+        }
+      }
+    },
+    {
+      "name": "rules-ru",
+      "label": "Правила (RU)",
+      "path": "packs/rules-ru",
+      "type": "JournalEntry",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "packFolders": [
@@ -89,24 +155,37 @@
       "sorting": "m",
       "color": "#8B0000",
       "packs": [
-        "dnd5e-2014-items-ru",
-        "dnd5e-2014-spells-ru",
-        "dnd5e-2014-races-ru",
-        "dnd5e-2014-classes-ru",
-        "dnd5e-2014-features-ru"
+        "rules-ru",
+        "races-ru",
+        "classes-ru",
+        "backgrounds-ru",
+        "features-ru",
+        "items-ru",
+        "spells-ru"
       ]
     }
   ],
   "url": "https://github.com/dnd5e-ru/foundry-dnd5e-2014",
   "manifest": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/releases/latest/download/module.json",
-  "download": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/releases/latest/download/dnd5e-2014-ru.zip",
+  "download": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/releases/download/v1.0.0/dnd5e-2014-ru-v1.0.0.zip",
   "license": "LICENSE",
   "readme": "README.md",
   "bugs": "https://github.com/dnd5e-ru/foundry-dnd5e-2014/issues",
   "changelog": "CHANGELOG.md",
+  "media": [
+    {
+      "type": "icon",
+      "url": "https://raw.githubusercontent.com/dnd5e-ru/foundry-dnd5e-2014/main/ui/icon.png"
+    },
+    {
+      "type": "setup",
+      "url": "ui/setup.jpg"
+    }
+  ],
   "flags": {
     "dnd5e-2014-ru": {
-      "edition": "2014"
+      "edition": "2014",
+      "language": "ru"
     }
   }
 }

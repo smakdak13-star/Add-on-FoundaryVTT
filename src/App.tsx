@@ -2,14 +2,14 @@ import { useState, useCallback } from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-type Tab = 'install' | 'contents' | 'preview';
+type Tab = 'install' | 'contents' | 'structure';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('install');
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const manifestUrl = window.location.origin + '/foundry-module/module.json';
+  const manifestUrl = 'https://github.com/dnd5e-ru/foundry-dnd5e-2014/releases/latest/download/module.json';
 
   const copyToClipboard = useCallback(async (text: string) => {
     try {
@@ -17,7 +17,6 @@ export default function App() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback
       const textarea = document.createElement('textarea');
       textarea.value = text;
       document.body.appendChild(textarea);
@@ -34,28 +33,21 @@ export default function App() {
     try {
       const zip = new JSZip();
 
-      // Загружаем все файлы модуля
       const files = [
         'module.json',
         'README.md',
         'CHANGELOG.md',
         'LICENSE',
         'lang/ru.json',
-        'scripts/dnd5e-2014.js',
-        'scripts/settings.js',
-        'scripts/templates.js',
-        'scripts/sheets/character-sheet.js',
-        'scripts/data/compendium-data.js',
-        'styles/dnd5e-2014.css',
-        'templates/actor-sheet.hbs',
-        'templates/parts/header.hbs',
-        'templates/parts/abilities.hbs',
-        'templates/parts/combat.hbs',
-        'templates/parts/skills.hbs',
-        'templates/parts/inventory.hbs',
-        'templates/parts/spells.hbs',
-        'templates/parts/features.hbs',
-        'templates/parts/biography.hbs'
+        'scripts/dnd5e-2014-ru.mjs',
+        'styles/dnd5e-2014-ru.css',
+        'packs/races-ru.db',
+        'packs/classes-ru.db',
+        'packs/items-ru.db',
+        'packs/spells-ru.db',
+        'packs/features-ru.db',
+        'packs/backgrounds-ru.db',
+        'packs/rules-ru.db'
       ];
 
       for (const file of files) {
@@ -81,7 +73,7 @@ export default function App() {
       {/* Header */}
       <header className="bg-gradient-to-r from-red-900 via-red-800 to-red-900 shadow-lg border-b border-red-700">
         <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
               <div className="text-4xl">⚔️</div>
               <div>
@@ -109,24 +101,15 @@ export default function App() {
         </div>
       </header>
 
-      {/* Version Badge */}
+      {/* Version Badges */}
       <div className="max-w-6xl mx-auto px-4 pt-4">
         <div className="flex gap-2 flex-wrap">
-          <span className="bg-green-900/50 text-green-300 px-3 py-1 rounded-full text-xs font-medium border border-green-700">
-            ✅ Версия 1.0.0
-          </span>
-          <span className="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-xs font-medium border border-blue-700">
-            🎲 Foundry VTT 13.351
-          </span>
-          <span className="bg-purple-900/50 text-purple-300 px-3 py-1 rounded-full text-xs font-medium border border-purple-700">
-            📖 Редакция 2014
-          </span>
-          <span className="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-xs font-medium border border-red-700">
-            🇷🇺 Русский язык
-          </span>
-          <span className="bg-amber-900/50 text-amber-300 px-3 py-1 rounded-full text-xs font-medium border border-amber-700">
-            ⚙️ Система dnd5e v4.x
-          </span>
+          <span className="bg-green-900/50 text-green-300 px-3 py-1 rounded-full text-xs font-medium border border-green-700">✅ v1.0.0</span>
+          <span className="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-xs font-medium border border-blue-700">🎲 Foundry 13.351</span>
+          <span className="bg-purple-900/50 text-purple-300 px-3 py-1 rounded-full text-xs font-medium border border-purple-700">📖 Редакция 2014</span>
+          <span className="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-xs font-medium border border-red-700">🇷🇺 Русский</span>
+          <span className="bg-amber-900/50 text-amber-300 px-3 py-1 rounded-full text-xs font-medium border border-amber-700">⚙️ dnd5e v4.x</span>
+          <span className="bg-cyan-900/50 text-cyan-300 px-3 py-1 rounded-full text-xs font-medium border border-cyan-700">📦 ES Module (.mjs)</span>
         </div>
       </div>
 
@@ -134,9 +117,9 @@ export default function App() {
       <nav className="max-w-6xl mx-auto px-4 mt-6">
         <div className="flex gap-1 border-b border-gray-700">
           {[
-            { id: 'install' as Tab, label: '📥 Установка', },
+            { id: 'install' as Tab, label: '📥 Установка' },
             { id: 'contents' as Tab, label: '📚 Содержимое' },
-            { id: 'preview' as Tab, label: '🖥️ Превью листа' },
+            { id: 'structure' as Tab, label: '📁 Структура' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -204,7 +187,11 @@ export default function App() {
                     </li>
                     <li className="flex gap-2">
                       <span className="text-amber-400 font-bold">5.</span>
-                      <span>Перейдите в настройки вашего мира и <strong>активируйте модуль</strong></span>
+                      <span>Перейдите в настройки вашего мира → <strong>Модули</strong> → <strong>Активируйте</strong> модуль</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-amber-400 font-bold">6.</span>
+                      <span>Компендиумы заполнятся автоматически при первом запуске (только для ГМ)</span>
                     </li>
                   </ol>
                 </div>
@@ -253,11 +240,35 @@ export default function App() {
                   </ul>
                 </div>
                 <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
-                  <h3 className="text-sm font-bold text-white mb-2">Рекомендуемые:</h3>
+                  <h3 className="text-sm font-bold text-white mb-2">Особенности:</h3>
                   <ul className="space-y-1 text-sm text-gray-300">
-                    <li>🌐 Последняя версия Foundry VTT</li>
-                    <li>📖 Полное понимание правил D&D 5e</li>
+                    <li>📦 ES Module (.mjs) — современный формат</li>
+                    <li>🗃️ NeDB компендиумы — заполняются автоматически</li>
+                    <li>🌐 Полная локализация на русский язык</li>
                   </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Module Info */}
+            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
+              <h2 className="text-xl font-bold text-amber-300 mb-4">📋 Информация о модуле</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="bg-gray-700/50 rounded-lg p-3 border border-gray-600 text-center">
+                  <div className="text-2xl font-bold text-amber-300">7</div>
+                  <div className="text-xs text-gray-400">Компендиумов</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3 border border-gray-600 text-center">
+                  <div className="text-2xl font-bold text-green-400">9</div>
+                  <div className="text-xs text-gray-400">Рас</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3 border border-gray-600 text-center">
+                  <div className="text-2xl font-bold text-blue-400">12</div>
+                  <div className="text-xs text-gray-400">Классов</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3 border border-gray-600 text-center">
+                  <div className="text-2xl font-bold text-purple-400">25+</div>
+                  <div className="text-xs text-gray-400">Заклинаний</div>
                 </div>
               </div>
             </div>
@@ -266,122 +277,85 @@ export default function App() {
 
         {activeTab === 'contents' && (
           <div className="space-y-6">
-            {/* Races */}
+            {/* Compendiums */}
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">🧬 Расы (9 + подрасы)</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <h2 className="text-xl font-bold text-amber-300 mb-4">📚 Компендиумы модуля</h2>
+              <div className="space-y-3">
                 {[
-                  { name: 'Человек', subraces: [], bonuses: '+1 ко всем' },
-                  { name: 'Эльф', subraces: ['Высший', 'Лесной', 'Дроу'], bonuses: '+2 Лвк' },
-                  { name: 'Дварф', subraces: ['Горный', 'Холмовой'], bonuses: '+2 Тел' },
-                  { name: 'Полурослик', subraces: ['Легконогий', 'Крепкий'], bonuses: '+2 Лвк' },
-                  { name: 'Драконорождённый', subraces: [], bonuses: '+2 Сил, +1 Хар' },
-                  { name: 'Гном', subraces: ['Лесной', 'Скальный'], bonuses: '+2 Инт' },
-                  { name: 'Полуэльф', subraces: [], bonuses: '+2 Хар' },
-                  { name: 'Полуорк', subraces: [], bonuses: '+2 Сил, +1 Тел' },
-                  { name: 'Тифлинг', subraces: [], bonuses: '+2 Хар, +1 Инт' },
-                ].map(race => (
-                  <div key={race.name} className="bg-gray-700/50 rounded-lg p-3 border border-gray-600">
-                    <div className="font-medium text-white text-sm">{race.name}</div>
-                    <div className="text-xs text-amber-400 mt-1">{race.bonuses}</div>
-                    {race.subraces.length > 0 && (
-                      <div className="text-xs text-gray-400 mt-1">
-                        Подрасы: {race.subraces.join(', ')}
+                  { name: 'races-ru', label: 'Расы (RU)', type: 'Item', count: '9 записей', desc: 'Человек, Эльф, Дварф, Полурослик, Драконорождённый, Гном, Полуэльф, Полуорк, Тифлинг' },
+                  { name: 'classes-ru', label: 'Классы (RU)', type: 'Item', count: '12 записей', desc: 'Варвар, Бард, Жрец, Друид, Воин, Монах, Паладин, Следопыт, Плут, Чародей, Колдун, Волшебник' },
+                  { name: 'items-ru', label: 'Предметы (RU)', type: 'Item', count: '23+ записей', desc: 'Оружие, доспехи, щиты, снаряжение, зелья, инструменты' },
+                  { name: 'spells-ru', label: 'Заклинания (RU)', type: 'Item', count: '25+ записей', desc: 'Заговоры и заклинания 1-5 кругов с полными параметрами' },
+                  { name: 'features-ru', label: 'Способности (RU)', type: 'Item', count: '16 записей', desc: 'Расовые и классовые способности с описаниями' },
+                  { name: 'backgrounds-ru', label: 'Предыстории (RU)', type: 'Item', count: '13 записей', desc: 'Все 13 предысторий из Книги Игрока' },
+                  { name: 'rules-ru', label: 'Правила (RU)', type: 'JournalEntry', count: '1 запись', desc: 'Основные правила: характеристики, бой, отдых, путешествия' },
+                ].map(pack => (
+                  <div key={pack.name} className="flex items-start gap-4 bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+                    <div className="bg-gray-600 rounded-lg p-2 text-center min-w-[60px]">
+                      <div className="text-xs text-gray-400">{pack.type === 'Item' ? '📦' : '📖'}</div>
+                      <div className="text-[10px] text-gray-500">{pack.type}</div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-white">{pack.label}</span>
+                        <code className="text-xs bg-gray-600 px-2 py-0.5 rounded text-gray-400">{pack.name}</code>
+                        <span className="text-xs text-amber-400">{pack.count}</span>
                       </div>
-                    )}
+                      <div className="text-xs text-gray-400 mt-1">{pack.desc}</div>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Classes */}
+            {/* Races Detail */}
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">⚔️ Классы (12)</h2>
+              <h2 className="text-xl font-bold text-amber-300 mb-4">🧬 Расы</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {[
-                  { name: 'Варвар', die: 'к12', caster: false, primary: 'Сила' },
-                  { name: 'Бард', die: 'к8', caster: true, primary: 'Харизма' },
-                  { name: 'Жрец', die: 'к8', caster: true, primary: 'Мудрость' },
-                  { name: 'Друид', die: 'к8', caster: true, primary: 'Мудрость' },
-                  { name: 'Воин', die: 'к10', caster: false, primary: 'Сила/Ловкость' },
-                  { name: 'Монах', die: 'к8', caster: false, primary: 'Ловкость' },
-                  { name: 'Паладин', die: 'к10', caster: true, primary: 'Сила' },
-                  { name: 'Следопыт', die: 'к10', caster: true, primary: 'Ловкость' },
-                  { name: 'Плут', die: 'к8', caster: false, primary: 'Ловкость' },
-                  { name: 'Чародей', die: 'к6', caster: true, primary: 'Харизма' },
-                  { name: 'Колдун', die: 'к8', caster: true, primary: 'Харизма' },
-                  { name: 'Волшебник', die: 'к6', caster: true, primary: 'Интеллект' },
+                  { name: 'Человек', bonuses: '+1 ко всем', traits: 'Универсальность' },
+                  { name: 'Эльф', bonuses: '+2 Лвк', traits: 'Тёмное зрение, Наследие Фей, Транс' },
+                  { name: 'Дварф', bonuses: '+2 Тел', traits: 'Тёмное зрение, Стойкость, Знание камня' },
+                  { name: 'Полурослик', bonuses: '+2 Лвк', traits: 'Везучий, Храбрый, Проворство' },
+                  { name: 'Драконорождённый', bonuses: '+2 Сил, +1 Хар', traits: 'Оружие дыхания, Сопротивление' },
+                  { name: 'Гном', bonuses: '+2 Инт', traits: 'Тёмное зрение, Гномья хитрость' },
+                  { name: 'Полуэльф', bonuses: '+2 Хар', traits: 'Тёмное зрение, Наследие Фей' },
+                  { name: 'Полуорк', bonuses: '+2 Сил, +1 Тел', traits: 'Неукротимая стойкость, Свирепые атаки' },
+                  { name: 'Тифлинг', bonuses: '+2 Хар, +1 Инт', traits: 'Адское сопротивление, Инфернальное наследие' },
+                ].map(race => (
+                  <div key={race.name} className="bg-gray-700/50 rounded-lg p-3 border border-gray-600">
+                    <div className="font-medium text-white text-sm">{race.name}</div>
+                    <div className="text-xs text-amber-400 mt-1">{race.bonuses}</div>
+                    <div className="text-xs text-gray-400 mt-1">{race.traits}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Classes Detail */}
+            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
+              <h2 className="text-xl font-bold text-amber-300 mb-4">⚔️ Классы</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {[
+                  { name: 'Варвар', die: 'к12', caster: false },
+                  { name: 'Бард', die: 'к8', caster: true },
+                  { name: 'Жрец', die: 'к8', caster: true },
+                  { name: 'Друид', die: 'к8', caster: true },
+                  { name: 'Воин', die: 'к10', caster: false },
+                  { name: 'Монах', die: 'к8', caster: false },
+                  { name: 'Паладин', die: 'к10', caster: true },
+                  { name: 'Следопыт', die: 'к10', caster: true },
+                  { name: 'Плут', die: 'к8', caster: false },
+                  { name: 'Чародей', die: 'к6', caster: true },
+                  { name: 'Колдун', die: 'к8', caster: true },
+                  { name: 'Волшебник', die: 'к6', caster: true },
                 ].map(cls => (
                   <div key={cls.name} className="bg-gray-700/50 rounded-lg p-3 border border-gray-600">
                     <div className="flex justify-between items-start">
                       <div className="font-medium text-white text-sm">{cls.name}</div>
                       <span className="text-xs bg-red-900/50 text-red-300 px-2 py-0.5 rounded">{cls.die}</span>
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">Главная: {cls.primary}</div>
-                    {cls.caster && (
-                      <div className="text-xs text-purple-400 mt-1">✨ Заклинатель</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Items */}
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">🎒 Предметы (40+)</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                  { category: '⚔️ Оружие', count: '15+', items: 'Кинжал, Длинный меч, Двуручный меч, Секира, Рапира, Длинный лук...' },
-                  { category: '🛡️ Доспехи', count: '9', items: 'Кожаный, Кольчужная рубаха, Кираса, Полулаты, Кольчужный, Латы...' },
-                  { category: '🎒 Снаряжение', count: '10+', items: 'Рюкзак, Верёвка, Факел, Сухой паёк, Бурдюк, Набор целителя...' },
-                  { category: '🧪 Зелья', count: '4', items: 'Зелье лечения, Старшего лечения, Высшего лечения, Великого лечения' },
-                ].map(cat => (
-                  <div key={cat.category} className="bg-gray-700/50 rounded-lg p-3 border border-gray-600">
-                    <div className="font-medium text-white text-sm">{cat.category}</div>
-                    <div className="text-xs text-amber-400 mt-1">{cat.count} предметов</div>
-                    <div className="text-xs text-gray-400 mt-1 truncate">{cat.items}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Spells */}
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">✨ Заклинания (30+)</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {[
-                  { level: 'Заговоры', spells: 'Огненный снаряд, Свет, Волшебная рука, Потусторонний разряд, Руководство...' },
-                  { level: '1-й круг', spells: 'Волшебная стрела, Щит, Лечащее слово, Лечение ран, Обнаружение магии, Благословение...' },
-                  { level: '2-й круг', spells: 'Туманный шаг, Невидимость, Духовное оружие, Зеркальный образ, Палящий луч...' },
-                  { level: '3-й круг', spells: 'Огненный шар, Контрзаклинание, Полёт, Ускорение, Рассеивание магии, Молния...' },
-                  { level: '4-й круг', spells: 'Врата измерений, Высшая невидимость, Полиморф, Стена огня...' },
-                  { level: '5-й круг', spells: 'Оживление, Конус холода, Воскрешение...' },
-                ].map(lvl => (
-                  <div key={lvl.level} className="bg-gray-700/50 rounded-lg p-3 border border-gray-600">
-                    <div className="font-medium text-purple-300 text-sm">{lvl.level}</div>
-                    <div className="text-xs text-gray-400 mt-1">{lvl.spells}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Compendiums */}
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">📚 Компендиумы (5)</h2>
-              <div className="space-y-2">
-                {[
-                  { name: 'Расы D&D 5e (2014) — RU', icon: '🧬', desc: '9 рас с подрасами и расовыми чертами' },
-                  { name: 'Классы D&D 5e (2014) — RU', icon: '⚔️', desc: '12 классов с таблицами уровней и способностями' },
-                  { name: 'Предметы D&D 5e (2014) — RU', icon: '🎒', desc: 'Оружие, доспехи, снаряжение, зелья, инструменты' },
-                  { name: 'Заклинания D&D 5e (2014) — RU', icon: '✨', desc: 'Заговоры и заклинания 1-5 кругов с параметрами' },
-                  { name: 'Способности D&D 5e (2014) — RU', icon: '⭐', desc: 'Расовые и классовые способности с описаниями' },
-                ].map(pack => (
-                  <div key={pack.name} className="flex items-center gap-3 bg-gray-700/50 rounded-lg p-3 border border-gray-600">
-                    <span className="text-2xl">{pack.icon}</span>
-                    <div>
-                      <div className="font-medium text-white text-sm">{pack.name}</div>
-                      <div className="text-xs text-gray-400">{pack.desc}</div>
-                    </div>
+                    {cls.caster && <div className="text-xs text-purple-400 mt-1">✨ Заклинатель</div>}
                   </div>
                 ))}
               </div>
@@ -389,158 +363,118 @@ export default function App() {
           </div>
         )}
 
-        {activeTab === 'preview' && (
+        {activeTab === 'structure' && (
           <div className="space-y-6">
+            {/* File Structure */}
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">🖥️ Превью русского листа персонажа</h2>
+              <h2 className="text-xl font-bold text-amber-300 mb-4">📁 Структура модуля</h2>
               <p className="text-sm text-gray-400 mb-4">
-                Так будет выглядеть лист персонажа в Foundry VTT после активации модуля:
+                Модуль следует официальным стандартам Foundry VTT для модулей:
               </p>
-
-              {/* Preview Sheet */}
-              <div className="bg-gray-900 rounded-xl border border-gray-600 overflow-hidden">
-                {/* Sheet Header */}
-                <div className="bg-gradient-to-r from-red-900 to-red-800 p-4 flex gap-4 items-center">
-                  <div className="w-20 h-20 bg-gray-700 rounded-lg border-2 border-amber-500 flex items-center justify-center text-3xl">
-                    🧙
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-xl font-bold text-amber-300">Эльдар Серебряный Ветер</div>
-                    <div className="text-xs text-red-200 mt-1">Полуэльф • Волшебник • Уровень 5 • Нейтральный добрый</div>
-                    <div className="flex gap-4 mt-2 text-xs text-red-200">
-                      <span>Предыстория: Мудрец</span>
-                      <span>Опыт: 6500</span>
-                      <span className="text-amber-300 font-bold">Бонус мастерства: +3</span>
-                      <span>⭐ Вдохновение</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sheet Tabs */}
-                <div className="flex bg-gray-800 border-b border-gray-700">
-                  {['👤 Персонаж', '🎒 Инвентарь', '✨ Заклинания', '⭐ Способности', '📝 Биография'].map((tab, i) => (
-                    <div key={tab} className={`px-4 py-2 text-xs ${i === 0 ? 'text-amber-300 border-b-2 border-amber-400' : 'text-gray-400'}`}>
-                      {tab}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Sheet Body */}
-                <div className="p-4 grid grid-cols-2 gap-4">
-                  {/* Abilities */}
-                  <div>
-                    <div className="text-xs text-amber-300 font-bold mb-2 border-b border-gray-700 pb-1">💪 Характеристики</div>
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { name: 'Сила', val: 8, mod: -1 },
-                        { name: 'Ловкость', val: 14, mod: 2 },
-                        { name: 'Телосложение', val: 12, mod: 1 },
-                        { name: 'Интеллект', val: 18, mod: 4 },
-                        { name: 'Мудрость', val: 13, mod: 1 },
-                        { name: 'Харизма', val: 10, mod: 0 },
-                      ].map(ab => (
-                        <div key={ab.name} className="text-center bg-gray-800 rounded-lg p-2 border border-gray-700">
-                          <div className="text-[10px] text-gray-400">{ab.name}</div>
-                          <div className="text-lg font-bold text-white">{ab.val}</div>
-                          <div className={`text-xs font-bold ${ab.mod >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {ab.mod >= 0 ? '+' : ''}{ab.mod}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Combat */}
-                  <div>
-                    <div className="text-xs text-amber-300 font-bold mb-2 border-b border-gray-700 pb-1">⚔️ Боевые параметры</div>
-                    <div className="grid grid-cols-3 gap-2 mb-3">
-                      <div className="text-center bg-gray-800 rounded-lg p-2 border border-gray-700">
-                        <div className="text-[10px] text-gray-400">КД</div>
-                        <div className="text-lg font-bold text-amber-300">13</div>
-                      </div>
-                      <div className="text-center bg-gray-800 rounded-lg p-2 border border-gray-700">
-                        <div className="text-[10px] text-gray-400">Инициатива</div>
-                        <div className="text-lg font-bold text-green-400">+2</div>
-                      </div>
-                      <div className="text-center bg-gray-800 rounded-lg p-2 border border-gray-700">
-                        <div className="text-[10px] text-gray-400">Скорость</div>
-                        <div className="text-lg font-bold text-blue-400">30</div>
-                      </div>
-                    </div>
-                    <div className="bg-gray-800 rounded-lg p-2 border border-gray-700">
-                      <div className="flex justify-between text-[10px] text-gray-400 mb-1">
-                        <span>Хиты</span>
-                        <span>28 / 28</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 h-3 bg-gray-700 rounded-full overflow-hidden">
-                          <div className="h-full bg-green-500 rounded-full" style={{ width: '100%' }}></div>
-                        </div>
-                        <span className="text-xs text-green-400 font-bold">28</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Skills Preview */}
-                  <div className="col-span-2">
-                    <div className="text-xs text-amber-300 font-bold mb-2 border-b border-gray-700 pb-1">🎯 Навыки</div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                      {[
-                        { name: 'Магия', mod: '+7', prof: true },
-                        { name: 'История', mod: '+6', prof: true },
-                        { name: 'Расследование', mod: '+7', prof: true },
-                        { name: 'Восприятие', mod: '+1', prof: false },
-                        { name: 'Проницательность', mod: '+1', prof: false },
-                        { name: 'Религия', mod: '+4', prof: false },
-                      ].map(skill => (
-                        <div key={skill.name} className="flex items-center gap-2 text-xs py-0.5">
-                          <div className={`w-3 h-3 rounded-full border ${skill.prof ? 'bg-amber-500 border-amber-400' : 'border-gray-600'}`} />
-                          <span className={`font-bold ${parseInt(skill.mod) >= 0 ? 'text-green-400' : 'text-red-400'}`}>{skill.mod}</span>
-                          <span className="text-gray-300">{skill.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 text-center text-xs text-gray-500">
-                * Это предварительный просмотр. Фактический вид может отличаться в зависимости от темы Foundry VTT.
+              <div className="bg-gray-900 rounded-lg p-4 font-mono text-xs text-gray-300 border border-gray-700 overflow-x-auto">
+                <pre>{`dnd5e-2014-ru/
+├── module.json              ← Манифест модуля (обязательный)
+├── README.md                ← Документация
+├── CHANGELOG.md             ← Список изменений
+├── LICENSE                  ← Лицензия MIT
+├── lang/
+│   └── ru.json              ← Локализация (200+ ключей)
+├── scripts/
+│   └── dnd5e-2014-ru.mjs    ← ES Module (главный скрипт)
+├── styles/
+│   └── dnd5e-2014-ru.css    ← Стили модуля
+└── packs/                   ← Компендиумы (NeDB формат)
+    ├── races-ru.db           ← Расы
+    ├── classes-ru.db         ← Классы
+    ├── items-ru.db           ← Предметы
+    ├── spells-ru.db          ← Заклинания
+    ├── features-ru.db        ← Способности
+    ├── backgrounds-ru.db     ← Предыстории
+    └── rules-ru.db           ← Правила (журнал)`}</pre>
               </div>
             </div>
 
-            {/* File Structure */}
+            {/* module.json */}
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
-              <h2 className="text-xl font-bold text-amber-300 mb-4">📁 Структура файлов модуля</h2>
-              <div className="bg-gray-900 rounded-lg p-4 font-mono text-xs text-gray-300 border border-gray-700">
-                <pre>{`dnd5e-2014-ru/
-├── module.json          ← Манифест модуля
-├── README.md            ← Документация
-├── CHANGELOG.md         ← Список изменений
-├── LICENSE              ← Лицензия MIT
-├── lang/
-│   └── ru.json          ← Локализация (500+ строк)
-├── scripts/
-│   ├── dnd5e-2014.js    ← Главный скрипт
-│   ├── settings.js      ← Настройки модуля
-│   ├── templates.js     ← Загрузка шаблонов
-│   ├── sheets/
-│   │   └── character-sheet.js  ← Лист персонажа
-│   └── data/
-│       └── compendium-data.js  ← Данные компендиумов
-├── styles/
-│   └── dnd5e-2014.css   ← Стили листа
-└── templates/
-    ├── actor-sheet.hbs  ← Главный шаблон
-    └── parts/
-        ├── header.hbs   ← Заголовок
-        ├── abilities.hbs ← Характеристики
-        ├── combat.hbs   ← Боевые параметры
-        ├── skills.hbs   ← Навыки
-        ├── inventory.hbs ← Инвентарь
-        ├── spells.hbs   ← Заклинания
-        ├── features.hbs ← Способности
-        └── biography.hbs ← Биография`}</pre>
+              <h2 className="text-xl font-bold text-amber-300 mb-4">📋 module.json (ключевые поля)</h2>
+              <div className="bg-gray-900 rounded-lg p-4 font-mono text-xs text-gray-300 border border-gray-700 overflow-x-auto">
+                <pre>{`{
+  "id": "dnd5e-2014-ru",
+  "title": "D&D 5e (2014) — Полная редакция на русском",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351",
+    "maximum": "13"
+  },
+  "esmodules": ["scripts/dnd5e-2014-ru.mjs"],
+  "styles": ["styles/dnd5e-2014-ru.css"],
+  "languages": [{ "lang": "ru", "name": "Русский", "path": "lang/ru.json" }],
+  "relationships": {
+    "systems": [{
+      "id": "dnd5e",
+      "type": "system",
+      "compatibility": { "minimum": "4.0.0", "verified": "4.1.0" }
+    }]
+  },
+  "packs": [
+    { "name": "races-ru", "label": "Расы (RU)", "type": "Item", "system": "dnd5e", ... },
+    { "name": "classes-ru", "label": "Классы (RU)", "type": "Item", "system": "dnd5e", ... },
+    ...
+  ],
+  "packFolders": [{
+    "name": "D&D 5e (2014) — Русский",
+    "color": "#8B0000",
+    "packs": ["rules-ru", "races-ru", "classes-ru", ...]
+  }]
+}`}</pre>
+              </div>
+            </div>
+
+            {/* Hooks */}
+            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
+              <h2 className="text-xl font-bold text-amber-300 mb-4">🪝 Хуки и события</h2>
+              <div className="space-y-3">
+                {[
+                  { hook: 'init', desc: 'Регистрация настроек, API модуля' },
+                  { hook: 'ready', desc: 'Автозаполнение компендиумов, приветственное сообщение' },
+                  { hook: 'renderItemSheet', desc: 'Перевод элементов интерфейса предметов' },
+                  { hook: 'renderChatMessage', desc: 'Перевод типов урона в чате' },
+                ].map(h => (
+                  <div key={h.hook} className="bg-gray-700/50 rounded-lg p-3 border border-gray-600">
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm text-purple-300 bg-gray-800 px-2 py-0.5 rounded">Hooks.on("{h.hook}")</code>
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">{h.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Comparison */}
+            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-xl">
+              <h2 className="text-xl font-bold text-amber-300 mb-4">🔄 Соответствие стандартам Foundry VTT</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left py-2 text-gray-400">Требование</th>
+                      <th className="text-left py-2 text-gray-400">Статус</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-gray-300">
+                    <tr className="border-b border-gray-700/50"><td className="py-2">module.json в корне</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">ES Module (.mjs)</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">Компендиумы в packs/</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">Локализация в lang/</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">Стили в styles/</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">packFolders для организации</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">relationships для зависимостей</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">compatibility field</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr className="border-b border-gray-700/50"><td className="py-2">manifest + download URLs</td><td className="py-2 text-green-400">✅</td></tr>
+                    <tr><td className="py-2">Hooks для инициализации</td><td className="py-2 text-green-400">✅</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -558,7 +492,7 @@ export default function App() {
             Данный модуль создан сообществом и распространяется бесплатно.
           </p>
           <p className="text-xs text-gray-600 mt-2">
-            Совместимо с Foundry VTT 13.351 | Система dnd5e v4.x | Редакция 2014
+            Совместимо с Foundry VTT 13.351 | Система dnd5e v4.x | Редакция 2014 | ES Module (.mjs)
           </p>
         </div>
       </footer>
